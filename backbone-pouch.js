@@ -147,6 +147,12 @@
         }
         // query view or spatial index
         if (options.fetch === 'query' || options.fetch === 'spatial') {
+          // _design/view
+          if (options.options[options.fetch].view) {
+            delete options.options[options.fetch].fun;
+            return options.db[options.fetch](options.options[options.fetch].view, options.options[options.fetch], callback);
+          }
+          
           if (!options.options[options.fetch].fun) {
             throw new Error('A "' + options.fetch + '.fun" object must be specified');
           }
